@@ -1,0 +1,68 @@
+common:
+  save_interval: 20
+  test_interval: 1
+  log_interval: 1
+  max_epoch: 600
+  seed: 3401
+  amp: False
+
+datasets:
+  train_path: '/home/xinyue/code/TCEmodel/Data/train_sample_en.pkl'
+  test_path: '/home/xinyue/code/TCEmodel/Data/seen_test_en.pkl'
+  batch_size: 72
+  tensor_cut: 32000
+  num_workers: 4
+  fixed_length: 0
+  pin_memory: True
+
+checkpoint:
+  resume: True
+  checkpoint_path: '/home/xinyue/code/TCEmodel/stage3/checkpoints_com_mi/bs72_epoch180_lr3e-4.pt'
+  disc_checkpoint_path: '/home/xinyue/code/TCEmodel/stage3/checkpoints_com_mi/bs72_epoch180_disc_lr3e-4.pt'
+  save_folder: '/home/xinyue/code/TCEmodel/stage3/checkpoints_com_mi'
+
+inference:
+  checkpoint_path: ''
+  save_folder: '/home/xinyue/code/encodec-pytorch-main/inference'
+
+optimization:
+  lr: 3e-4
+  disc_lr: 3e-4
+
+model:
+  target_bandwidths: 24.
+  sample_rate: 16_000
+  channels: 1
+  train_discriminator: True # you can set it to 2/3 and other number to train discriminator only
+  filters: 32
+  ratios: [8, 5, 4, 2]
+  disc_win_lengths: [1024, 2048, 512]
+  disc_hop_lengths: [256, 512, 128]
+  disc_n_ffts: [1024, 2048, 512]
+  causal: True
+  init_temperature_tim: 0.1
+  init_margin_tim: 0.5
+  init_temperature_emo: 0.2
+  init_margin_emo: 0.3
+  norm: 'weight_norm'
+  segment: None
+  name: 'my_encodec'
+  dimension: 768
+  bins: 1024
+
+lr_scheduler:
+  warmup_epoch: 2
+  
+balancer:
+  weights:
+    l_t: 0.1               # 时间域低权重，防止波形压制特征
+    l_f: 1.0               # 频域重建，确保音质自然
+    l_g: 3.0               # GAN 强化自然度
+    l_feat: 2.0            # 感知一致性
+    spk_loss: 2.5          # 音色强化
+    emo_loss: 2.5          # 情感表达
+    con_loss: 2.5          # 语义表达，降低防止过拟合
+    gate_reg_loss: 1.0
+
+
+

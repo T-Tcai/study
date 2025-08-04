@@ -1,0 +1,42 @@
+common:
+  save_interval: 1
+  test_interval: 1
+  log_interval: 1
+  max_epoch: 30
+  seed: 3401
+  amp: False
+
+datasets:
+  train_path: '/home/xinyue/code/TCEmodel/Data/train_sample.pkl'
+  test_path: '/home/xinyue/code/TCEmodel/Data/seen_test.pkl'
+  batch_size: 12
+  tensor_cut: 32000
+  num_workers: 4
+  fixed_length: 0
+  pin_memory: True
+
+model:
+  sample_rate: 16000
+  channels: 1
+  filters: 32
+  train_discriminator: True
+
+checkpoint:
+  resume: False
+  checkpoint_path: '/home/xinyue/code/TCEmodel/stage2/checkpoints_end/bs12_epoch9_lr3e-4.pt'
+  disc_checkpoint_path: '/home/xinyue/code/TCEmodel/stage2/checkpoints_end/bs12_epoch9_mi_lr1e-5.pt'
+  save_folder: '/home/xinyue/code/TCEmodel/stage2/checkpoints_en_ch'
+
+inference:
+  checkpoint_path: ''
+  save_folder: '/home/xinyue/code/encodec-pytorch-main/inference'
+
+optimization:
+  lr: 3e-4
+  mi_lr: 1e-5
+
+
+
+
+
+
